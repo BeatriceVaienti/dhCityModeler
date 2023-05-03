@@ -7,8 +7,10 @@ A library to model historical cities procedurally based on GIS datasets
 
 conda create --name dhCityModeller
 conda activate dhCityModeller
-conda install -c anaconda ipykernel  # install kernel for jupyter notebook
-conda install geopandas
+conda install -c anaconda ipykernel  # install kernel for jupyter notebook 
+conda install jupyterlab
+conda install -c conda-forge geopandas
+conda install -c conda-forge numpy
 
 
 
