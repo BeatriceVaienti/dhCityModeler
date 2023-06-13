@@ -21,3 +21,16 @@ conda deactivate
 
 
 
+## Enabling the versioning capabilities
+To use the versioning functions it's necessary to clone in your repository the cityjson-versioning-prototipe repository as a submodule. 
+
+to do it go in your folder, activate your virtual environment and type:
+```bash
+$ git submodule add https://github.com/tudelft3d/cityjson-versioning-prototype.git
+```
+
+then you need to install it. To do so move into the folder cityjson-versioning-prototype and type:
+
+```bash
+pip install --editable .
+```
