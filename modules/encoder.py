@@ -11,6 +11,7 @@ import copy
 import logging
 import math
 import random
+import datetime
 
 
 def scale_back_vertices(cityjson, vertices):
@@ -948,3 +949,42 @@ def get_changed_keys(new_cityobject, old_cityobject):
     for i in range(len(comparison)):
         changed_keys.append(comparison[i][1])
     return changed_keys
+
+def update_attributes(edited_cityobject, changed_keys, edit_author, edit_message):
+    edit_date = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    if len(changed_keys)>0  :
+        first_keys=[]
+        for changed_key in changed_keys:
+            first_keys.append(changed_key[0])
+        # the height has an interdependency with the number of floors and the height of a single floor so we need to check which one(s) changed and remove the other(s)
+        if "numberOfFloors" in first_keys and "height" not in first_keys:
+            edited_cityobject['attributes'].pop('height', None)
+        if "height" in first_keys and "numberOfFloors" not in first_keys:
+            edited_cityobject['attributes'].pop('numberOfFloors', None)
+        if "height" in first_keys and "numberOfFloors" in first_keys:
+            edited_cityobject['attributes'].pop('floorHeight', None)
+        
+        my_dict = edited_cityobject['attributes']
+
+        for changed_key in changed_keys:
+            if 'paradata' not in changed_key:
+                keys = changed_key
+                current_level = my_dict
+                for key in keys[:-1]:
+                    current_level = current_level[key]
+
+                if 'paradata' not in current_level.keys() and current_level!=my_dict:
+                    current_level['paradata'] = {}
+                if current_level!=my_dict:
+                    current_level['paradata']['author'] = edit_author
+                    current_level['paradata']['comments'] = edit_message
+                    current_level['paradata']['date'] = edit_date
+                    if "version" in current_level['paradata'].keys():
+                        current_level['paradata']['version'] = str (int(current_level['paradata']['version']) + 1)
+                    else:
+                        current_level['paradata']['version'] = "0"
+        return edited_cityobject
+    else:
+        if True:
+            print("No changes have been made")
+        return edited_cityobject
