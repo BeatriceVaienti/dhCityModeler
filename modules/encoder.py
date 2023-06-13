@@ -951,6 +951,17 @@ def get_changed_keys(new_cityobject, old_cityobject):
     return changed_keys
 
 def update_attributes(edited_cityobject, changed_keys, edit_author, edit_message):
+    """
+    Updates the attributes of a building based on the changes made by the user
+
+    Args:
+        - edited_cityobject: dictionary with the attributes of the building
+        - changed_keys: list of the keys of the attributes that changed
+        - edit_author: name of the user who made the changes
+        - edit_message: message of the user who made the changes
+    Returns:
+        - edited_cityobject: dictionary with the attributes of the building
+    """
     edit_date = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     if len(changed_keys)>0  :
         first_keys=[]
