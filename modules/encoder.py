@@ -999,3 +999,21 @@ def update_attributes(edited_cityobject, changed_keys, edit_author, edit_message
         if True:
             print("No changes have been made")
         return edited_cityobject
+
+def update_cityjson(new_cityjson, old_cityjson, id_building, edit_author, edit_message):
+    """
+    Updates a new cityobject in a cityjson file
+
+    Args:
+        - new_cityjson: dictionary with the new cityjson file
+        - old_cityjson: dictionary with the old cityjson file
+        - id_building: id of the building to be updated
+    Returns:
+        - CityJSON: dictionary with the updated cityjson file
+    """
+    old_cityobject = old_cityjson['CityObjects'][id_building]
+    new_cityobject = new_cityjson['CityObjects'][id_building]
+    changed_keys = get_changed_keys(new_cityobject, old_cityobject)
+    new_cityjson['CityObjects'][id_building] = update_attributes(new_cityobject, changed_keys, edit_author, edit_message)
+    CityJSON = update_cityjson_geometry(new_cityjson, id_building)
+    return CityJSON
