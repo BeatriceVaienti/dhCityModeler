@@ -1,0 +1,3 @@
+[submodule "cityjson-versioning-prototype"]
+	path = cityjson-versioning-prototype
+	url = https://github.com/tudelft3d/cityjson-versioning-prototype.git
