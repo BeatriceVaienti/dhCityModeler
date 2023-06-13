@@ -2,6 +2,7 @@ import modules.parameters as parameters
 import modules.roofs as roofs
 import modules.walls as walls
 import modules.utils as utils
+import modules.compare_jsons as compare_jsons
 import cadquery as cq
 import networkx as nx
 import numpy as np
@@ -926,3 +927,24 @@ def remove_extra_parameters(parameters, roofType):
     for key in list(parameters.keys()):
         if key not in valid_parameters.get(roofType, []):
             parameters.pop(key)
+
+def get_changed_keys(new_cityobject, old_cityobject):
+    """
+    Compares the attributes of two buildings and returns the keys of the attributes that changed
+
+    Args:
+        - new_cityobject: dictionary with the attributes of the new building
+        - old_cityobject: dictionary with the attributes of the old building
+    Returns:
+        - changed_keys: list of the keys of the attributes that changed
+    """
+    
+    old_building = old_cityobject['attributes']
+    new_building = new_cityobject['attributes']
+
+    changed_keys = []
+    comparison=compare_jsons.compare_jsons(old_building, new_building)
+        
+    for i in range(len(comparison)):
+        changed_keys.append(comparison[i][1])
+    return changed_keys
