@@ -4,22 +4,6 @@
 from dataclasses import dataclass
 
 
-"""
-The best case is when we know the number of floors and the floor height. 
-in this case the floor height is not used and is merely inferred for later used
-
-if we know the height but not the number of floors or the floor height, 
-we can infer the number of floors by a default floor height and readjust the floor height to obtain an integer number of floors
-
-if we know the number of floors but not the height or the floor height, 
-we can infer the height by multiplying the number of floors by a default floor height
-
-if we know the number of floors and the floor height then the overall height is simply inferrecd 
-by multiplying the number of floors by the floor height
-
-if we don't know anything, the number of floor is assigned randomly in a given range and the height is inferred by multiplying the number of floors by a default floor height 
-"""
-
 @dataclass
 class Source:  
     name: str = None
@@ -59,7 +43,6 @@ class Paradata:
             self.uncertainty = value 
         if field == "version":
             self.version = value
-
 
 
 

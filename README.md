@@ -2,15 +2,20 @@
 A library to model historical cities procedurally based on GIS datasets
 
 # Installation
-
-## Creating a Virtual Environment
-
-conda create --name dhCityModeller
+the file conda_env.yml contains the environment used for development.
+To install the environment run the following command:
+```
+conda env create --file=conda_env.yml
+```
+To activate the environment run the following command:
+```
 conda activate dhCityModeller
-conda install -c anaconda ipykernel  # install kernel for jupyter notebook 
-conda install jupyterlab
-conda install -c conda-forge geopandas
-conda install -c conda-forge numpy
+```
+To deactivate the environment run the following command:
+```
+conda deactivate
+```
+## Creating a Virtual Environment
 
 
 
