@@ -9,7 +9,7 @@ setup(
     install_requires=[
         'numpy',
         'pandas',
-        'geopandas',
+        'geopandas @ git+https://github.com/geopandas/geopandas.git@main',
         'cadquery @ git+ https://github.com/CadQuery/cadquery.git@master',
         'ipykernel',
         'pydelatin'
