@@ -10,7 +10,7 @@ setup(
         'numpy',
         'pandas',
         'geopandas @ git+https://github.com/geopandas/geopandas.git@main',
-        'cadquery @ git+ https://github.com/CadQuery/cadquery.git@master',
+        'cadquery @ git+https://github.com/CadQuery/cadquery.git@master',
         'ipykernel',
         'pydelatin'
     ],
