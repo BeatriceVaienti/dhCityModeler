@@ -9,9 +9,9 @@ setup(
     install_requires=[
         'numpy',
         'pandas',
+        'geopandas',
         'cadquery @ git+https://github.com/dhlab-epfl/cadquery.git@master',
         'ipykernel',
-        'geopandas',
         'pydelatin'
     ],
 )
