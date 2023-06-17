@@ -10,7 +10,7 @@ setup(
         'numpy',
         'pandas',
         'geopandas',
-        'cadquery @ git+https://github.com/dhlab-epfl/cadquery.git@master',
+        'cadquery @ git+ https://github.com/CadQuery/cadquery.git@master',
         'ipykernel',
         'pydelatin'
     ],
