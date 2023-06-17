@@ -2,6 +2,7 @@
 A library to model historical cities procedurally based on GIS datasets
 
 # Installation
+## Creating a Virtual Environment
 the file conda_env.yml contains the environment used for development.
 To install the environment run the following command:
 ```
@@ -15,7 +16,7 @@ To deactivate the environment run the following command:
 ```
 conda deactivate
 ```
-## Creating a Virtual Environment
+
 
 
 
