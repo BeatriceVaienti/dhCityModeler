@@ -108,6 +108,9 @@
     "extraAttributes": {
         "Building": {
             "+updatedGeometry": { "type": "boolean" },
+            
+            "+terrainDifference": {"type": "number"},
+
             "+modellingTypes": {
                 "type": "array",
                 "items": {
