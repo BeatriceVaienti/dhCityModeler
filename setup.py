@@ -3,7 +3,7 @@ from setuptools import setup
 setup(
     name='dhCityModeller',
     version='1.0.0',
-    description='Package for GIS based procedural modelling',
+    description='Package for GIS based procedural modelling and ML based data completion.',
     author='Beatrice Vaienti',
     packages=['modules'],  
     install_requires=[
