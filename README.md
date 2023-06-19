@@ -1,7 +1,7 @@
 # dhCityModeller
 A library to model historical cities procedurally based on GIS datasets
 
-# Installation
+# Installation with Conda
 ## Creating a Virtual Environment
 the file conda_env.yml contains the environment used for development.
 To install the environment run the following command:
@@ -17,11 +17,6 @@ To deactivate the environment run the following command:
 conda deactivate
 ```
 
-
-
-
-
-
 ## Enabling the versioning capabilities
 To use the versioning functions it's necessary to clone in your repository the cityjson-versioning-prototipe repository as a submodule. 
 
@@ -35,3 +30,9 @@ then you need to install it. To do so move into the folder cityjson-versioning-p
 ```bash
 pip install --editable .
 ```
+
+## From 2D to 3D with dhCityModeller
+<a target="_blank" href="https://colab.research.google.com/github/BeatriceVaienti/dhCityModeller/blob/master/functionality_test_3D_generation.ipynb">
+  <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
+</a>
+
