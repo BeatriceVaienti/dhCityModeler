@@ -1,4 +1,5 @@
 fields
+type
 height.value
 height.sources.n.name
 height.sources.n.type
