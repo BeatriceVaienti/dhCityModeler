@@ -20,6 +20,7 @@
         "paradata": {
             "type": "object",
             "properties": {
+                "type": {"type": "string", "enum": ["user", "inferred", "predicted", "random"]}, 
                 "author": {"type": "string"},
                 "date": {"type": "string", "format": "date"},
                 "comments": {"type": "string"},

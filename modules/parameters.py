@@ -1,6 +1,3 @@
-
-
-
 from dataclasses import dataclass
 
 
@@ -23,6 +20,7 @@ class Source:
 
 @dataclass
 class Paradata:
+    type: str = None
     author: str = None
     date: str = None
     comments: str  = None
@@ -30,9 +28,11 @@ class Paradata:
     version: str = 0
 
     def create_dictionary(self):
-        return  {"author":self.author, "date":self.date, "comments":self.comments, "uncertainty":self.uncertainty, "version":self.version}
+        return  {"type":self.type, "author":self.author, "date":self.date, "comments":self.comments, "uncertainty":self.uncertainty, "version":self.version}
 
     def fill(self, field, value):
+        if field == "type":
+            self.type = value
         if field == "author":
             self.author = value
         if field == "date":

@@ -13,6 +13,45 @@ import math
 import random
 import datetime
 
+def map_column_values(df, column_name, mapping):
+    """
+    Maps values of a specified column in a DataFrame according to a provided mapping dictionary.
+    
+    Args:
+        df (pandas.DataFrame): The DataFrame containing the column to be mapped.
+        column_name (str): The name of the column to be mapped.
+        mapping (dict): The mapping dictionary specifying the values to be replaced.
+        
+    Returns:
+        pandas.DataFrame: The DataFrame with the values in the specified column mapped according to the provided mapping.
+    """
+    df[column_name] = df[column_name].map(mapping).fillna(df[column_name])
+    return df
+
+def replace_none_with_nan(gdf):
+    """
+    Replaces None values with np.nan in a geopandas dataframe
+    
+    Args:
+        gdf (geopandas dataframe): geopandas dataframe to replace None values with np.nan
+
+    Returns:
+        gdf (geopandas dataframe): geopandas dataframe with None values replaced with np.nan
+    """
+    gdf = gdf.replace([None], np.nan)
+    return gdf
+
+
+def map_gdf_to_historicalcityjson(gdf, fields_df, mapping):
+    fields = fields_df['fields'].tolist()
+    for field in fields:
+        if field in mapping:
+            geojson_field = mapping[field]
+            #rename the field in the gdf with the one in the mapping (from geojson field to field)
+            gdf.rename(columns={geojson_field: field}, inplace=True)
+       
+            # Update the corresponding field in the geojson with the value  
+    return gdf
 
 def scale_back_vertices(cityjson, vertices):
     """
@@ -67,8 +106,8 @@ def clean_gdf(gdf):
     gdf['geometry'] = gdf['geometry'].apply(lambda geom: geom.geoms[0] if geom.geom_type == 'MultiPolygon' else geom) # Convert MultiPolygons to Polygons
 
     return gdf
-
-def gdf_to_CityJSON_attributes(gdf, cityjson, parameters_to_check = ["height", "numberOfFloors", "roof.type", 'roof.parameters.slope', 'floorHeight']):
+#finish to add all parameters to check, or use file! 
+def gdf_to_CityJSON_attributes(gdf, cityjson, parameters_to_check = ["height", "numberOfFloors", "floorHeight", "material", "roof.type", 'roof.parameters.slope']):
     """
     Converts the attributes of a GeoDataFrame to CityJSON attributes.
     Args:
@@ -79,7 +118,6 @@ def gdf_to_CityJSON_attributes(gdf, cityjson, parameters_to_check = ["height", "
         - cityjson (dict): The updated CityJSON dictionary
     """
     for i in range(len(gdf)):
-        
         all_attributes = {}
         for par in parameters_to_check:
             attribute_dict = build_attribute_dict(gdf, i, [par])
@@ -87,6 +125,8 @@ def gdf_to_CityJSON_attributes(gdf, cityjson, parameters_to_check = ["height", "
         
         city_object_id = "id-" + str(i)
         city_object = cityjson["CityObjects"][city_object_id]
+        if 'type' in gdf.columns:
+            city_object['type'] = gdf['type'][i]
         city_object_attributes = city_object.get("attributes", {})
         city_object_attributes.update(all_attributes)
         city_object_attributes["updatedGeometry"] = True
