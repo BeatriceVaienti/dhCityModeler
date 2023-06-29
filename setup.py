@@ -13,6 +13,7 @@ setup(
         'cadquery-ocp',
         'cadquery @ git+https://github.com/CadQuery/cadquery.git@master',
         'ipykernel',
-        'pydelatin'
+        'pydelatin',
+        'scikit-learn'
     ],
 )
