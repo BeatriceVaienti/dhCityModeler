@@ -14,6 +14,6 @@ setup(
         'cadquery @ git+https://github.com/CadQuery/cadquery.git@master',
         'ipykernel',
         'pydelatin',
-        'scikit-learn==0.17'
+        'scikit-learn>=1.2'
     ],
 )
