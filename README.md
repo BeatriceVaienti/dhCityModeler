@@ -30,9 +30,9 @@ then you need to install it. To do so move into the folder cityjson-versioning-p
 ```bash
 pip install --editable .
 ```
-
+## Mapping the values and filling gaps
 ## From 2D to 3D with dhCityModeller
-<a target="_blank" href="https://colab.research.google.com/github/BeatriceVaienti/dhCityModeller/blob/master/functionality_test_3D_generation.ipynb">
-  <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
-</a>
+## If you use this library please cite the following paper:
+``` 
+
 
