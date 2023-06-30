@@ -1,4 +1,4 @@
-# dhCityModeller
+# dhCityModeler
 A library to model historical cities procedurally based on GIS datasets
 
 # Installation with Conda
@@ -41,5 +41,21 @@ To prepare the dataset we also provide a script to fill the gaps in partially co
 ## From 2D to 3D with dhCityModeller
 ## If you use this library please cite the following paper:
 ``` 
-Vaienti, B.; Petitpierre, R.; di Lenardo, I.; Kaplan, F. Machine-Learning-Enhanced Procedural Modeling for 4D Historical Cities Reconstruction. Remote Sens. 2023, 1, 0
+
+@Article{rs15133352,
+AUTHOR = {Vaienti, Beatrice and Petitpierre, Rémi and di Lenardo, Isabella and Kaplan, Frédéric},
+TITLE = {Machine-Learning-Enhanced Procedural Modeling for 4D Historical Cities Reconstruction},
+JOURNAL = {Remote Sensing},
+VOLUME = {15},
+YEAR = {2023},
+NUMBER = {13},
+ARTICLE-NUMBER = {3352},
+URL = {https://www.mdpi.com/2072-4292/15/13/3352},
+ISSN = {2072-4292},
+ABSTRACT = {The generation of 3D models depicting cities in the past holds great potential for documentation and educational purposes. However, it is often hindered by incomplete historical data and the specialized expertise required. To address these challenges, we propose a framework for historical city reconstruction. By integrating procedural modeling techniques and machine learning models within a Geographic Information System (GIS) framework, our pipeline allows for effective management of spatial data and the generation of detailed 3D models. We developed an open-source Python module that fills gaps in 2D GIS datasets and directly generates 3D models up to LOD 2.1 from GIS files. The use of the CityJSON format ensures interoperability and accommodates the specific needs of historical models. A practical case study using footprints of the Old City of Jerusalem between 1840 and 1940 demonstrates the creation, completion, and 3D representation of the dataset, highlighting the versatility and effectiveness of our approach. This research contributes to the accessibility and accuracy of historical city models, providing tools for the generation of informative 3D models. By incorporating machine learning models and maintaining the dynamic nature of the models, we ensure the possibility of supporting ongoing updates and refinement based on newly acquired data. Our procedural modeling methodology offers a streamlined and open-source solution for historical city reconstruction, eliminating the need for additional software and increasing the usability and practicality of the process.},
+DOI = {10.3390/rs15133352}
+}
+``` 
+
+
 
