@@ -34,5 +34,5 @@ pip install --editable .
 ## From 2D to 3D with dhCityModeller
 ## If you use this library please cite the following paper:
 ``` 
-
+Vaienti, B.; Petitpierre, R.; di Lenardo, I.; Kaplan, F. Machine-Learning-Enhanced Procedural Modeling for 4D Historical Cities Reconstruction. Remote Sens. 2023, 1, 0
 
