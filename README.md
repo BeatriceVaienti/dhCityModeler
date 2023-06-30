@@ -34,8 +34,7 @@ pip install --editable .
 The first step of this pipeline consists in preparing your dataset to be used by the library. In particular, we need to create a geodataframe whose columns and contents respod to the provided extension. In the folder ./extension you can find the .ext.json file (containing the full extension) and a .csv file containing the flattened version of the extension, which can be employed to map the values of the dataset.
 To prepare the dataset we also provide a script to fill the gaps in partially completed fields. In the notebook filling_and_mapping.ipynb and in the corresponding Colab (colab_filling_and_mapping.ipynb) you can find an example of how to use the scripts. We propose to first proceed with the filling and then with the mapping, since we acknowledge that through the mapping users may have to flatten some of the information they have to comply with the prescribed fields.
 
-Here embed a colab button: 
-[![Open In Colab](https://colab.research.google.com/github/BeatriceVaienti/dhCityModeler/blob/master/tests/colab_filling_and_mapping.ipynb)]
+![Open In Colab](https://colab.research.google.com/github/BeatriceVaienti/dhCityModeler/blob/master/tests/colab_filling_and_mapping.ipynb)
 
 
 
