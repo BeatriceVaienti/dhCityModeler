@@ -12,6 +12,7 @@ import logging
 import math
 import random
 import datetime
+import pandas as pd
 
 def map_column_values(df, column_name, mapping):
     """
@@ -42,7 +43,8 @@ def replace_none_with_nan(gdf):
     return gdf
 
 
-def map_gdf_to_historicalcityjson(gdf, fields_df, mapping):
+def map_gdf_fields_to_historicalcityjson(gdf, mapping):
+    fields_df = pd.read_csv('../extension/geojson_mapping.csv')
     fields = fields_df['fields'].tolist()
     for field in fields:
         if field in mapping:
@@ -84,7 +86,7 @@ def gdf_to_CityJSON(gdf):
         gdf (geopandas.GeoDataFrame): The GeoDataFrame to be converted.
 
     Returns:
-        str: The resulting CityJSON file.
+        cityjson: The resulting CityJSON file.
     """
     
     gdf_new=clean_gdf(gdf)
@@ -106,23 +108,46 @@ def clean_gdf(gdf):
     gdf['geometry'] = gdf['geometry'].apply(lambda geom: geom.geoms[0] if geom.geom_type == 'MultiPolygon' else geom) # Convert MultiPolygons to Polygons
 
     return gdf
+
+def extract_unique_values(fields_df):
+    unique_values = set()
+    for field in fields_df['fields']:
+        if '.value' in field:
+            value = field.split('.value')[0]
+            unique_values.add(value)
+        elif '.sources' in field:
+            value = field.split('.sources')[0]
+            unique_values.add(value)
+        elif '.paradata' in field:
+            value = field.split('.paradata')[0]
+            unique_values.add(value)
+
+    return list(unique_values)
+
+def has_matching_column(gdf, prefix):
+    matching_columns = [col for col in gdf.columns if prefix in col]
+    return len(matching_columns) > 0
 #finish to add all parameters to check, or use file! 
-def gdf_to_CityJSON_attributes(gdf, cityjson, parameters_to_check = ["height", "numberOfFloors", "floorHeight", "material", "roof.type", 'roof.parameters.slope']):
+def gdf_to_CityJSON_attributes(gdf, cityjson):
     """
     Converts the attributes of a GeoDataFrame to CityJSON attributes.
     Args:
         - gdf (geopandas.GeoDataFrame): The GeoDataFrame
         - cityjson (dict): The CityJSON dictionary to be updated
-        - parameters_to_check (list): The list of parameters to be extracted
     Returns:
         - cityjson (dict): The updated CityJSON dictionary
     """
+    gdf = gdf.replace(np.nan, None)
+    fields_df = pd.read_csv('../extension/geojson_mapping.csv')
+    parameters_to_check = extract_unique_values(fields_df)
     for i in range(len(gdf)):
         all_attributes = {}
+
         for par in parameters_to_check:
-            attribute_dict = build_attribute_dict(gdf, i, [par])
-            all_attributes = recursive_dict_update(all_attributes, attribute_dict)
-        
+            if has_matching_column(gdf, par):
+                attribute_dict = build_attribute_dict(gdf, i, par)
+                all_attributes = recursive_dict_update(all_attributes, attribute_dict)
+            
         city_object_id = "id-" + str(i)
         city_object = cityjson["CityObjects"][city_object_id]
         if 'type' in gdf.columns:
@@ -202,36 +227,44 @@ def extract_attribute(gdf, i, par):
     attribute = None
     paradata = None
     sources = []
-    
-    par_name = par.split(".")[-1]
-    attribute = parameters.Parameter(name=par_name)
+    par_split = par.split(".")
+    par_name = par_split[-1]
+    par_root = par_split[0]
+    #we need to understand the type of parameter:
+    if par_root == "time":
+        attribute = parameters.TimeMoment(par_name)
+    else:
+        attribute = parameters.Parameter(name=par_name)
     paradata = parameters.Paradata()
     source = parameters.Source()
     
     for j, element in enumerate(gdf.iloc[i]):
         field_name = gdf.iloc[i].index[j]
-        if type(element) == np.int64:
-            element = int(element)
+        
         if field_name.startswith(par):
+
+            if type(element) == np.int64:
+                element = int(element)
+
             field_subname = field_name.split(par + ".")[-1]
+
             attribute.fill(field_subname, element)
             
             if field_name.startswith(par + ".paradata"):
                 field_paradata = field_name.split("paradata.")[-1]
                 paradata.fill(field_paradata, element)
                 attribute.fill("paradata", paradata.create_dictionary())
-                
-            if field_name.startswith(par + ".sources"):
+            elif field_name.startswith(par + ".sources"):
                 source_num = int(field_name.split("sources.")[1].split(".")[0])
                 if source_num != len(sources):
                     sources.append(source.create_dictionary())
                     source = parameters.Source(name=None)
                 source_info = field_name.split("sources.")[1].split(".")[1]
                 source.fill(source_info, element)
-    
-    sources.append(source.create_dictionary())
-    attribute.fill("sources", sources)
-    
+    if source.create_dictionary() != {}:            
+        sources.append(source.create_dictionary())
+    if sources != []:
+        attribute.fill("sources", sources)
     return attribute
 
 def remove_duplicate_points(coords):
@@ -394,7 +427,7 @@ def create_cityjson_dictionary(SCALE_FACTOR, TRANSL_FACTOR, GEOG_EXTENT, epsg, c
 
     return cityjson
 
-def build_attribute_dict(gdf, i, parameters_to_check):
+def build_attribute_dict(gdf, i, parameter_to_check):
     """
     Builds a dictionary of attributes from the GeoDataFrame.
     Args:
@@ -406,18 +439,18 @@ def build_attribute_dict(gdf, i, parameters_to_check):
 
     """
     attribute_dict = {}
-    for par in parameters_to_check:
-        nested_structure = par.split(".")
-        if len(nested_structure) == 1:
-            attribute_dict[nested_structure[0]] = extract_attribute(gdf, i, par).create_dictionary()
-        else:
-            cur_dict = attribute_dict
-            for k in range(len(nested_structure)):
-                if nested_structure[k] not in cur_dict:
-                    cur_dict[nested_structure[k]] = {}
-                if k == len(nested_structure) - 1:
-                    cur_dict[nested_structure[k]] = extract_attribute(gdf, i, par).create_dictionary()
-                cur_dict = cur_dict[nested_structure[k]]
+    
+    nested_structure = parameter_to_check.split(".")
+    if len(nested_structure) == 1:
+        attribute_dict[nested_structure[0]] = extract_attribute(gdf, i, parameter_to_check).create_dictionary()
+    else:
+        cur_dict = attribute_dict
+        for k in range(len(nested_structure)):
+            if nested_structure[k] not in cur_dict:
+                cur_dict[nested_structure[k]] = {}
+            if k == len(nested_structure) - 1:
+                cur_dict[nested_structure[k]] = extract_attribute(gdf, i, parameter_to_check).create_dictionary()
+            cur_dict = cur_dict[nested_structure[k]]
     return attribute_dict
 
 def recursive_dict_update(dict1, dict2):
@@ -459,9 +492,6 @@ def get_footprint_vertices(cityjson, id):
     #get the vertices of the footprint whose id is given
     vertices = cityjson['vertices']
     foundLOD0=False
-
-    #get the coordinates of the vertices of the footprint
-    #coords = [vertices[i] for i in CityJSON['CityObjects'][id]['geometry'][0]['boundaries'][0]]
     for geom in cityjson['CityObjects'][id]['geometry']:
         if geom['lod']=='0':   
             coords= [vertices[i] for i in  geom['boundaries'][0][0]]
@@ -691,10 +721,8 @@ def generate_LOD1_geom_attributes(id, cityjson):
     """
     # Retrieve the geometric features that are already present for this building in the CityJSON
     inherited_geom_attributes = cityjson['CityObjects'][id].get('attributes', {})
-    
     # Initialize the dictionary of geometry attributes with the building ID
     geom_attributes = {"id": id}
-    
     
     possible_attributes_lod1 = ['height', 'numberOfFloors', 'floorHeight', 'terrainDifference']
     for attribute in possible_attributes_lod1:

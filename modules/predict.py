@@ -78,6 +78,7 @@ def fill_missing_values(target_name, gdf, selected_columns, clf=RandomForestClas
             imp.fit(X_pred[X_pred[numerical_col].notna()][numerical_col].values.reshape(-1,1)) 
             X_pred.loc[X_pred[numerical_col].isna(), numerical_col] = imp.transform(X_pred[X_pred[numerical_col].isna()][numerical_col].values.reshape(-1,1)).reshape(-1,)
         # First, let’s create the preprocessors for the numerical and categorical parts.
+    
     categorical_preprocessor = OneHotEncoder(handle_unknown="ignore")
     numerical_preprocessor = StandardScaler()
 
@@ -88,17 +89,22 @@ def fill_missing_values(target_name, gdf, selected_columns, clf=RandomForestClas
         remainder="passthrough")
     clf = make_pipeline(preprocessor, clf)
     clf.fit(X, y)
+    score = clf.score(X, y)
+    model = str(clf.named_steps['randomforestclassifier'])
+    model_and_score = str("Model: %s" % model) + str(" Score: %.4f" % score)
+
     #print(X_pred.isna().values)
     y_pred= clf.predict(X_pred)
     # put y_pred and X_pred in the same dataframe 
     incomplete_data[target_name] = y_pred
     incomplete_data[target_name + '_IsPredicted'] = 'predicted'
+    incomplete_data[target_name + '_comments'] = model_and_score
     complete_data[target_name + '_IsPredicted'] = 'user'
     #add the incomplete data to the complete data
-    #complete_data = complete_data.append(incomplete_data)
-    # use concat to add the incomplete data to the complete data
     complete_data = pd.concat([complete_data, incomplete_data], axis=0)
     complete_data.sort_index(inplace=True)
     completed_column = complete_data[target_name]
     is_predicted_column = complete_data[target_name + '_IsPredicted']
-    return completed_column, is_predicted_column
+    comments_column = complete_data[target_name + '_comments']
+    return completed_column, is_predicted_column, comments_column
+

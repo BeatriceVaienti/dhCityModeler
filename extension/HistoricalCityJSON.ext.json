@@ -27,14 +27,6 @@
                 "uncertainty": {"type": "string"},
                 "version": {"type": "string"}
             }
-        },
-        "timeMoment": {
-            "type": "object",
-            "properties": {
-                "year": {"type": "integer"},
-                "sources":{"$ref": "#/definitions/sources"},
-                "paradata":{"$ref": "#/definitions/paradata"}
-            }
         }
     },
 
@@ -291,17 +283,26 @@
                 "type": "object",
                 "properties":{
 
+
                     "estimatedStart":{
-                        "timeMoment":{"$ref": "#/definitions/timeMoment"}
+                        "year": {"type": "integer"},
+                        "sources" : {"$ref": "#/definitions/sources"},
+                        "paradata" : {"$ref": "#/definitions/paradata"}
                     },
 
                     "appearances":{
                         "type": "array",
-                        "items": {"timeMoment":{"$ref": "#/definitions/timeMoment"}}
+                        "items": {"timeMoment":{
+                            "year": {"type": "integer"},
+                            "sources" : {"$ref": "#/definitions/sources"},
+                            "paradata" : {"$ref": "#/definitions/paradata"}
+                        }}
                     },
 
                     "estimatedEnd":{
-                        "timeMoment":{"$ref": "#/definitions/timeMoment"}
+                        "year": {"type": "integer"},
+                        "sources" : {"$ref": "#/definitions/sources"},
+                        "paradata" : {"$ref": "#/definitions/paradata"}
                     }
                 }
             }
