@@ -41,7 +41,6 @@ To prepare the dataset we also provide a script to fill the gaps in partially co
 ## From 2D to 3D with dhCityModeller
 ## If you use this library please cite the following paper:
 ``` 
-
 @Article{rs15133352,
 AUTHOR = {Vaienti, Beatrice and Petitpierre, Rémi and di Lenardo, Isabella and Kaplan, Frédéric},
 TITLE = {Machine-Learning-Enhanced Procedural Modeling for 4D Historical Cities Reconstruction},
