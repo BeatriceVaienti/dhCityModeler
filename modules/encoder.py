@@ -703,8 +703,12 @@ def fill_geom_attribute(attribute_name, inherited_geometric_attributes, geometri
             geometric_attributes[attribute_name] = {'value': None}
     else:
         geometric_attributes[attribute_name] = inherited_geometric_attributes[attribute_name]
-    if attribute_name == 'numberOfFloors':
-        print(geometric_attributes[attribute_name])
+        if attribute_name == 'numberOfFloors' and 'value' in geometric_attributes[attribute_name]:
+            geometric_attributes[attribute_name]['value'] = int(geometric_attributes[attribute_name]['value'])
+        elif attribute_name == 'height' and 'value' in geometric_attributes[attribute_name]:
+            geometric_attributes[attribute_name]['value'] = float(geometric_attributes[attribute_name]['value'])
+        elif 'value' not in geometric_attributes[attribute_name]:
+            geometric_attributes[attribute_name] = {'value': None}
     return geometric_attributes
 
 def generate_LOD1_geom_attributes(id, cityjson):
@@ -743,9 +747,7 @@ def generate_LOD1(id, cityjson):
 
     """
     geom_attributes=generate_LOD1_geom_attributes(id, cityjson)
-    
-    vertices= get_footprint_vertices(cityjson, id)      #get the vertices of the footprint
-    
+    vertices= get_footprint_vertices(cityjson, id)  #get the vertices of the footprint
     new_vertices=scale_vertices(cityjson, vertices)
 
     logging.info("geom_attributes['height']:")
@@ -1081,11 +1083,7 @@ def update_cityjson(new_cityjson, old_cityjson, id_building, edit_author, edit_m
     old_cityobject = old_cityjson['CityObjects'][id_building]
     new_cityobject = new_cityjson['CityObjects'][id_building]
     changed_keys = get_changed_keys(new_cityobject, old_cityobject)
-    if True:
-        print('-----')
-        print('changed keys:')
-        print(changed_keys)
-        print('-----')
+
     new_cityjson['CityObjects'][id_building] = update_attributes(new_cityobject, changed_keys, edit_author, edit_message)
     CityJSON = update_cityjson_geometry(new_cityjson, id_building)
     return CityJSON
