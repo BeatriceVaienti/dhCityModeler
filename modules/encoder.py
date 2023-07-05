@@ -1013,7 +1013,7 @@ def get_changed_keys(new_cityobject, old_cityobject):
 
     changed_keys = []
     comparison=compare_jsons.compare_jsons(old_building, new_building)
-        
+    print(comparison)
     for i in range(len(comparison)):
         changed_keys.append(comparison[i][1])
     return changed_keys
@@ -1033,15 +1033,18 @@ def update_attributes(edited_cityobject, changed_keys, edit_author, edit_message
     edit_date = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     if len(changed_keys)>0  :
         first_keys=[]
+        print('-------')
+        print('---------')
+        print(changed_keys)
         for changed_key in changed_keys:
             first_keys.append(changed_key[0])
         # the height has an interdependency with the number of floors and the height of a single floor so we need to check which one(s) changed and remove the other(s)
         if "numberOfFloors" in first_keys and "height" not in first_keys:
-            edited_cityobject['attributes'].pop('height', None)
+            edited_cityobject['attributes']['height'] = {}       #should we recalculate here directly the connected values?
         if "height" in first_keys and "numberOfFloors" not in first_keys:
-            edited_cityobject['attributes'].pop('numberOfFloors', None)
+            edited_cityobject['attributes']['numberOfFloors'] = {}
         if "height" in first_keys and "numberOfFloors" in first_keys:
-            edited_cityobject['attributes'].pop('floorHeight', None)
+            edited_cityobject['attributes']['floorHeight'] = {}
         
         my_dict = edited_cityobject['attributes']
 
@@ -1080,10 +1083,9 @@ def update_cityjson(new_cityjson, old_cityjson, id_building, edit_author, edit_m
         - CityJSON: dictionary with the updated cityjson file
     """
     
-    old_cityobject = old_cityjson['CityObjects'][id_building]
+    #old_cityobject = old_cityjson['CityObjects'][id_building]
     new_cityobject = new_cityjson['CityObjects'][id_building]
-    changed_keys = get_changed_keys(new_cityobject, old_cityobject)
-
+    changed_keys = new_cityobject['attributes']['changedKeys']
     new_cityjson['CityObjects'][id_building] = update_attributes(new_cityobject, changed_keys, edit_author, edit_message)
     CityJSON = update_cityjson_geometry(new_cityjson, id_building)
     return CityJSON
