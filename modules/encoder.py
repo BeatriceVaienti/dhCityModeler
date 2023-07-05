@@ -866,17 +866,19 @@ def update_cityjson_geometry(cityjson_modified, id_building):
         multisurface = get_multisurface(lod)
         multisurface2 = round_and_scale_coords(multisurface, cityjson)
         multisurface3 = vertices_to_index(multisurface2, cityjson)
-
+        lod_value = str(lod_value)
         lod_dict = {
             "type": "MultiSurface",
-            "lod": str(lod_value),
+            "lod": lod_value,
             "boundaries": multisurface3
         }
 
         lod_exists = any(d['lod'] == lod_value for d in sub_dict)
 
         if lod_exists:
+
             index = next((i for i, d in enumerate(sub_dict) if d['lod'] == lod_value), None)
+            print('index', index)
             cityjson['CityObjects'][id_building]['geometry'][index] = lod_dict
         else:
             cityjson['CityObjects'][id_building]['geometry'].append(lod_dict)
