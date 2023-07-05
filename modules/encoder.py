@@ -6,7 +6,6 @@ import modules.compare_jsons as compare_jsons
 import cadquery as cq
 import networkx as nx
 import numpy as np
-import time
 import copy
 import logging
 import math
@@ -704,6 +703,8 @@ def fill_geom_attribute(attribute_name, inherited_geometric_attributes, geometri
             geometric_attributes[attribute_name] = {'value': None}
     else:
         geometric_attributes[attribute_name] = inherited_geometric_attributes[attribute_name]
+    if attribute_name == 'numberOfFloors':
+        print(geometric_attributes[attribute_name])
     return geometric_attributes
 
 def generate_LOD1_geom_attributes(id, cityjson):
@@ -879,12 +880,9 @@ def update_cityjson_geometry(cityjson_modified, id_building):
             cityjson['CityObjects'][id_building]['geometry'].append(lod_dict)
 
     LOD1, geomFeatures_LOD1 = generate_LOD1(id_building, cityjson)
-    if True:
-        LOD2, geomFeatures_LOD2 = generate_LOD2(id_building, cityjson, LOD1, geomFeatures_LOD1)
-    else:
-        cityjson['CityObjects'][id_building]['attributes'].update(geomFeatures_LOD1)
-        update_lod(LOD1, 1)
-        return cityjson
+
+    LOD2, geomFeatures_LOD2 = generate_LOD2(id_building, cityjson, LOD1, geomFeatures_LOD1)
+
     cityjson['CityObjects'][id_building]['attributes'].update(geomFeatures_LOD2)
 
     update_lod(LOD1, 1)
@@ -1059,7 +1057,7 @@ def update_attributes(edited_cityobject, changed_keys, edit_author, edit_message
                     current_level['paradata']['comments'] = edit_message
                     current_level['paradata']['date'] = edit_date
                     if "version" in current_level['paradata'].keys():
-                        current_level['paradata']['version'] = str (int(current_level['paradata']['version']) + 1)
+                        current_level['paradata']['version'] = str(int(current_level['paradata']['version']) + 1)
                     else:
                         current_level['paradata']['version'] = "0"
         return edited_cityobject
@@ -1079,9 +1077,15 @@ def update_cityjson(new_cityjson, old_cityjson, id_building, edit_author, edit_m
     Returns:
         - CityJSON: dictionary with the updated cityjson file
     """
+    
     old_cityobject = old_cityjson['CityObjects'][id_building]
     new_cityobject = new_cityjson['CityObjects'][id_building]
     changed_keys = get_changed_keys(new_cityobject, old_cityobject)
+    if True:
+        print('-----')
+        print('changed keys:')
+        print(changed_keys)
+        print('-----')
     new_cityjson['CityObjects'][id_building] = update_attributes(new_cityobject, changed_keys, edit_author, edit_message)
     CityJSON = update_cityjson_geometry(new_cityjson, id_building)
     return CityJSON
