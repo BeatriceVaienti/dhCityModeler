@@ -44,7 +44,7 @@ You can test the encoding and modeling functions by using the provided notebook 
 
 [Open In Colab](https://colab.research.google.com/github/BeatriceVaienti/dhCityModeler/blob/master/tests/colab_3D_generation.ipynb)
 
-## If you use this library please cite the following paper:
+## If you use this library please cite the following [paper](https://www.mdpi.com/2072-4292/15/13/3352):
 ``` 
 @Article{rs15133352,
 AUTHOR = {Vaienti, Beatrice and Petitpierre, Rémi and di Lenardo, Isabella and Kaplan, Frédéric},
@@ -62,7 +62,7 @@ DOI = {10.3390/rs15133352}
 
 ## The Historical CityJSON Extension
 In the folder /extension you can find the extension file for CityJSON and its flattened form that we employ as a tabular form in the GeoJSON files that we want to encode.
-This constitutes a work in progress that we are constantly updating to accomodate better the needs of our historical models and their interoperability with existing schema. You can find the principles behind it in the following paper, even though the version in this repository represents the latest version of it:
+This constitutes a work in progress that we are constantly updating to accomodate better the needs of our historical models and their interoperability with existing schema. You can find the principles behind it in the following [paper](https://doi.org/10.1145/3557919.3565813), even though the version in this repository represents the latest version of it:
 
 ``` 
 @inproceedings{10.1145/3557919.3565813,
