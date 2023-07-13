@@ -30,14 +30,17 @@ then you need to install it. To do so move into the folder cityjson-versioning-p
 ```bash
 pip install --editable .
 ```
-## Mapping the values and filling gaps
+
+## Using the library
+While it is possible to directly use the functions defined in the /modules folder, we provide two prepared notebook and files to start from to make the use of the library easier. In particular, the pipeline to create your 3D CityJSON file with our procedural modeling scripts can be divided in the two following sub-steps:
+### 1. Mapping the values and filling gaps
 The first step of this pipeline consists in preparing your dataset to be used by the library. In particular, we need to create a geodataframe whose columns and contents respod to the provided extension. In the folder ./extension you can find the .ext.json file (containing the full extension) and a .csv file containing the flattened version of the extension, which can be employed to map the values of the dataset.
 To prepare the dataset we also provide a script to fill the gaps in partially completed fields. In the notebook /tests/filling_and_mapping.ipynb and in the corresponding Colab (colab_filling_and_mapping.ipynb) you can find an example of how to use the scripts. We propose to first proceed with the filling and then with the mapping, since we acknowledge that through the mapping users may have to flatten some of the information they have to comply with the prescribed fields.
 
 [Open In Colab](https://colab.research.google.com/github/BeatriceVaienti/dhCityModeler/blob/master/tests/colab_filling_and_mapping.ipynb)
 
 
-## From 2D to 3D with dhCityModeller
+### 2. From 2D to 3D with dhCityModeller
 Once you have a geojson that has been mapped to the prescribed fields you're all set to proceed with the encoding in the CityJSON format and the 3D generation of geometry (NB: it's not mandatory to fill every field! If some necessary field it's missing it will be automatically filled and marked as such in its paradata).
 The core principle of our library is that 3D geometry is the result of the combination between a footprint and a set of parameters that describe the geometry. The geometry generation is built using [CadQuery](https://github.com/CadQuery/cadquery), a library for 3D CAD modeling.
 You can test the encoding and modeling functions by using the provided notebook (/tests/3D_generation.ipynb) or the corresponding Google Colab:
