@@ -32,13 +32,18 @@ pip install --editable .
 ```
 ## Mapping the values and filling gaps
 The first step of this pipeline consists in preparing your dataset to be used by the library. In particular, we need to create a geodataframe whose columns and contents respod to the provided extension. In the folder ./extension you can find the .ext.json file (containing the full extension) and a .csv file containing the flattened version of the extension, which can be employed to map the values of the dataset.
-To prepare the dataset we also provide a script to fill the gaps in partially completed fields. In the notebook filling_and_mapping.ipynb and in the corresponding Colab (colab_filling_and_mapping.ipynb) you can find an example of how to use the scripts. We propose to first proceed with the filling and then with the mapping, since we acknowledge that through the mapping users may have to flatten some of the information they have to comply with the prescribed fields.
+To prepare the dataset we also provide a script to fill the gaps in partially completed fields. In the notebook /tests/filling_and_mapping.ipynb and in the corresponding Colab (colab_filling_and_mapping.ipynb) you can find an example of how to use the scripts. We propose to first proceed with the filling and then with the mapping, since we acknowledge that through the mapping users may have to flatten some of the information they have to comply with the prescribed fields.
 
 [Open In Colab](https://colab.research.google.com/github/BeatriceVaienti/dhCityModeler/blob/master/tests/colab_filling_and_mapping.ipynb)
 
 
-
 ## From 2D to 3D with dhCityModeller
+Once you have a geojson that has been mapped to the prescribed fields you're all set to proceed with the encoding in the CityJSON format and the 3D generation of geometry (NB: it's not mandatory to fill every field! If some necessary field it's missing it will be automatically filled and marked as such in its paradata).
+The core principle of our library is that 3D geometry is the result of the combination between a footprint and a set of parameters that describe the geometry. The geometry generation is built using [CadQuery](https://github.com/CadQuery/cadquery), a library for 3D CAD modeling.
+You can test the encoding and modeling functions by using the provided notebook (/tests/3D_generation.ipynb) or the corresponding Google Colab:
+
+[Open In Colab](https://colab.research.google.com/github/BeatriceVaienti/dhCityModeler/blob/master/tests/colab_3D_generation.ipynb)) 
+
 ## If you use this library please cite the following paper:
 ``` 
 @Article{rs15133352,
@@ -51,10 +56,26 @@ NUMBER = {13},
 ARTICLE-NUMBER = {3352},
 URL = {https://www.mdpi.com/2072-4292/15/13/3352},
 ISSN = {2072-4292},
-ABSTRACT = {The generation of 3D models depicting cities in the past holds great potential for documentation and educational purposes. However, it is often hindered by incomplete historical data and the specialized expertise required. To address these challenges, we propose a framework for historical city reconstruction. By integrating procedural modeling techniques and machine learning models within a Geographic Information System (GIS) framework, our pipeline allows for effective management of spatial data and the generation of detailed 3D models. We developed an open-source Python module that fills gaps in 2D GIS datasets and directly generates 3D models up to LOD 2.1 from GIS files. The use of the CityJSON format ensures interoperability and accommodates the specific needs of historical models. A practical case study using footprints of the Old City of Jerusalem between 1840 and 1940 demonstrates the creation, completion, and 3D representation of the dataset, highlighting the versatility and effectiveness of our approach. This research contributes to the accessibility and accuracy of historical city models, providing tools for the generation of informative 3D models. By incorporating machine learning models and maintaining the dynamic nature of the models, we ensure the possibility of supporting ongoing updates and refinement based on newly acquired data. Our procedural modeling methodology offers a streamlined and open-source solution for historical city reconstruction, eliminating the need for additional software and increasing the usability and practicality of the process.},
 DOI = {10.3390/rs15133352}
 }
 ``` 
 
+## The Historical CityJSON Extension
+In the folder /extension you can find the extension file for CityJSON and its flattened form that we employ as a tabular form in the GeoJSON files that we want to encode.
+This constitutes a work in progress that we are constantly updating to accomodate better the needs of our historical models and their interoperability with existing schema. You can find the principles behind it in the following paper, even though the version in this repository represents the latest version of it:
 
+``` 
+@inproceedings{10.1145/3557919.3565813,
+author = {Vaienti, Beatrice and Guhennec, Paul and di Lenardo, Isabella},
+title = {A Data Structure for Scientific Models of Historical Cities: Extending the CityJSON Format},
+year = {2022}, isbn = {9781450395335},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/3557919.3565813},
+doi = {10.1145/3557919.3565813},
+booktitle = {Proceedings of the 6th ACM SIGSPATIAL International Workshop on Geospatial Humanities},
+pages = {20–23},
+numpages = {4}, keywords = {uncertainty visualisation, version controlling, digitisation, architectural reconstruction, 4D cities, historical validation, historical modelling},
+location = {Seattle, Washington}, series = {GeoHumanities '22} }
+``` 
 
