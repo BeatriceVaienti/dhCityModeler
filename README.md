@@ -42,7 +42,7 @@ Once you have a geojson that has been mapped to the prescribed fields you're all
 The core principle of our library is that 3D geometry is the result of the combination between a footprint and a set of parameters that describe the geometry. The geometry generation is built using [CadQuery](https://github.com/CadQuery/cadquery), a library for 3D CAD modeling.
 You can test the encoding and modeling functions by using the provided notebook (/tests/3D_generation.ipynb) or the corresponding Google Colab:
 
-[Open In Colab](https://colab.research.google.com/github/BeatriceVaienti/dhCityModeler/blob/master/tests/colab_3D_generation.ipynb)) 
+[Open In Colab](https://colab.research.google.com/github/BeatriceVaienti/dhCityModeler/blob/master/tests/colab_3D_generation.ipynb)
 
 ## If you use this library please cite the following paper:
 ``` 
